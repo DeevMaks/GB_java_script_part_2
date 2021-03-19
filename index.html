@@ -7,11 +7,23 @@
   <div id="app">
     <header>
       <input id="search" v-model="search" v-on:input="searchHandler">
-      <button class="cart-button" type="button">Корзина</button>
+      <cart v-on:remove="removeFromCartHandler">
+        <goods-item 
+          v-for="good in cart" 
+          v-bind:title="good.title" 
+          v-bind:price="good.price"
+          v-bind:id="good.id"
+        />
+      </cart>
     </header>
     <main>
-      <div class="goods-list">
-        <div class="goods-item" v-for="good in filtredGoods"><h3>{{ good.title }}</h3><p>{{ good.price }}</p></div>
+      <div class="goods-list" v-on:click="addToCartHandler">
+        <goods-item 
+          v-for="good in filtredGoods" 
+          v-bind:title="good.title" 
+          v-bind:price="good.price"
+          v-bind:id="good.id"
+        ></goods-item>
       </div>
     </main>
   </div>

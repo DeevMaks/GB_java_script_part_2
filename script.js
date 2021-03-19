@@ -1,13 +1,58 @@
 const API_URL = '/goods.json';
 
+
+Vue.component('goods-item', { // Создание нового компонента
+  template: '<div :data-id="id" class="goods-item"><h3>{{ title }}</h3><p>{{ price }}</p></div>',
+  props: ['title', 'price', 'id'] // задаем параметры компонента
+})
+
+Vue.component('cart', { // создание компонента корзины
+  template: `<div>
+    <button class="cart-button" @click="openCartHandler" type="button">Корзина</button>
+    <div v-if="isVisibleCart" v-on:click="removeHandler">
+      <slot></slot>
+    </div>
+  </div>`,
+  data() { // данные компонента (Обязательно в виде метода!)
+    return {
+      isVisibleCart: false
+    }
+  },
+  methods: {
+    openCartHandler() {
+      this.isVisibleCart = !this.isVisibleCart;
+    },
+
+    removeHandler(e) {
+      this.$emit('remove', e) // Генерируем пользовательское событие
+    }
+  }
+})
+
 const vue = new Vue({
   el: "#app",
   data: {
+    cart: [],
     goods: [],
     filtredGoods: [],
     search: ''
   },
   methods: {
+    addToCartHandler(e) {
+      const id = e.target.closest('.goods-item').dataset.id;
+      const good = this.goods.find((item) => item.id == id);
+
+      this.cart.push(good);
+    },
+
+    removeFromCartHandler(e) {
+      console.log(e)
+      const id = e.target.closest('.goods-item').dataset.id;
+      const goodIndex = this.cart.findIndex((item) => item.id == id);
+
+      this.cart.splice(goodIndex - 1, 1);
+    },
+
     searchHandler() {
               if(this.search === '') {
                 this.filtredGoods = this.goods;
