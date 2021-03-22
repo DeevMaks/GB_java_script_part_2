@@ -18,6 +18,8 @@
     </header>
     <main>
       <div class="goods-list" v-on:click="addToCartHandler">
+        <div v-if="!isLoaded"><h4>Loading...</h4></div>
+        <div v-if="isLoaded && goods.length == 0"><h4>Товаров нет</h4></div>
         <goods-item 
           v-for="good in filtredGoods" 
           v-bind:title="good.title" 
