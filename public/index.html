@@ -6,7 +6,7 @@
 <body>
   <div id="app">
     <header>
-      <input id="search" v-model="search" v-on:input="searchHandler">
+      <search v-on:search="searchHandler"></search>
       <cart v-on:remove="removeFromCartHandler">
         <goods-item 
           v-for="good in cart" 
